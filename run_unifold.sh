@@ -1,3 +1,5 @@
+#!/bin/bash
+
 fasta_path=$1
 output_dir_base=$2
 database_dir=$3

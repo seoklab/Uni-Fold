@@ -1,3 +1,5 @@
+#!/bin/bash
+
 [ -z "${MASTER_PORT}" ] && MASTER_PORT=10087
 [ -z "${MASTER_IP}" ] && MASTER_IP=127.0.0.1
 [ -z "${n_gpu}" ] && n_gpu=$(nvidia-smi -L | wc -l)

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 fasta_path=$1
 symmetry=$2
 output_dir_base=$3
