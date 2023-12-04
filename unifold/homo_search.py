@@ -206,7 +206,7 @@ def generate_pkl_features(
         f.write(json.dumps(timings, indent=4))
 
 
-def main(argv):
+def _main(argv):
     if len(argv) > 1:
         raise app.UsageError("Too many command-line arguments.")
 
@@ -297,7 +297,7 @@ def main(argv):
         )
 
 
-if __name__ == "__main__":
+def main():
     flags.mark_flags_as_required(
         [
             "fasta_path",
@@ -310,4 +310,8 @@ if __name__ == "__main__":
         ]
     )
 
-    app.run(main)
+    app.run(_main)
+
+
+if __name__ == "__main__":
+    main()
