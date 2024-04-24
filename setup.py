@@ -52,14 +52,17 @@ setup(
         "finetune_multimer.sh",
         "run_uf_symmetry.sh",
         "run_unifold.sh",
+        "run_unifold_musse.sh",
         "train_monomer.sh",
         "train_multimer.sh",
+        "infer_lm.py",
     ],
     entry_points={
         "console_scripts": [
             "unifold-homo-search = unifold.homo_search:main",
             "unifold-inference = unifold.inference:main",
             "unifold-inference-symmetry = unifold.inference_symmetry:main",
+            "unifold-pack-feat = unifold.pack_feat:entrypoint",
         ]
     },
 )

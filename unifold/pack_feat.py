@@ -138,7 +138,7 @@ def main(argv):
         )
 
 
-if __name__ == "__main__":
+def entrypoint():
     flags.mark_flags_as_required(
         [
             "fasta_path",
@@ -147,3 +147,7 @@ if __name__ == "__main__":
     )
 
     app.run(main)
+
+
+if __name__ == "__main__":
+    entrypoint()
