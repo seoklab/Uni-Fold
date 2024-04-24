@@ -1,4 +1,5 @@
-set -e 
+#!/bin/bash -e
+
 fasta_path=$1
 output_dir_base=$2
 param_path=$3
