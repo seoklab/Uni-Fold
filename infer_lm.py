@@ -193,7 +193,7 @@ def load_model_ensemble_and_task(
     state = torch.load(filename, map_location=torch.device("cpu"))
     args = state["args"]
     dictionary = Dictionary.load(
-        Path(unifold.__file__).parent / "musse/plm/dict_esm.txt")
+        str(Path(unifold.__file__).parent / "musse/plm/dict_esm.txt"))
     model = BertModel(args, dictionary)
 
     def upgrade_state_dict(state_dict):
