@@ -28,6 +28,7 @@ setup(
         exclude=["scripts", "tests", "example_data", "docker", "benchmark", "img", "evaluation", "notebooks"]
     ),
     include_package_data=True,
+    package_data={"": ["*.txt"]},
     install_requires=[
         "absl-py",
         "biopython",
