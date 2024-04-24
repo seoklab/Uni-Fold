@@ -27,6 +27,7 @@ setup(
     packages=find_packages(
         exclude=["scripts", "tests", "example_data", "docker", "benchmark", "img", "evaluation", "notebooks"]
     ),
+    include_package_data=True,
     install_requires=[
         "absl-py",
         "biopython",

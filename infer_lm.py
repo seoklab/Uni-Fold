@@ -17,6 +17,7 @@ from functools import lru_cache
 from unicore.data import Dictionary
 import numpy as np
 import torch
+import unifold
 from unifold.musse.plm.model.bert import BertModel
 import time
 
@@ -191,7 +192,8 @@ def load_model_ensemble_and_task(
     filename = filenames[0]
     state = torch.load(filename, map_location=torch.device("cpu"))
     args = state["args"]
-    dictionary = Dictionary.load(os.path.join("unifold/musse/plm", "dict_esm.txt"))
+    dictionary = Dictionary.load(
+        Path(unifold.__file__).parent / "musse/plm/dict_esm.txt")
     model = BertModel(args, dictionary)
 
     def upgrade_state_dict(state_dict):
