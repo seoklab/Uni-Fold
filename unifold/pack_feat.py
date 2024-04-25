@@ -62,16 +62,12 @@ def _check_flag(flag_name: str, other_flag_name: str, should_be_set: bool):
 def generate_pkl_features(
     fasta_path: str,
     fasta_name: str,
-    output_dir_base: str,
+    output_dir: str,
 ):
     """
     Predicts structure using AlphaFold for the given sequence.
     """
     timings = {}
-    output_dir = os.path.join(output_dir_base, fasta_name.split("_")[0])
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-    chain_id = fasta_name.split("_")[1] if len(fasta_name.split("_")) > 1 else "A"
     input_seqs, input_descs = parsers.parse_fasta(open(fasta_path, "r").read())
     assert len(input_seqs) == 1 
     input_seq = input_seqs[0]
@@ -106,6 +102,10 @@ def main(argv):
 
     fasta_path = FLAGS.fasta_path
     fasta_name = Path(fasta_path).stem
+    output_dir = os.path.join(FLAGS.output_dir, fasta_name)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
     input_fasta_str = open(fasta_path).read()
     input_seqs, input_descs = parsers.parse_fasta(input_fasta_str)
     if len(input_seqs) > 1:
@@ -115,9 +115,6 @@ def main(argv):
         fasta_names = temp_names
         fasta_paths = temp_paths
     else:
-        output_dir = os.path.join(FLAGS.output_dir, fasta_name)
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
         chain_order_path = os.path.join(output_dir, "chains.txt")
         with open(chain_order_path, "w") as f:
             f.write("A")
@@ -134,7 +131,7 @@ def main(argv):
         generate_pkl_features(
             fasta_path=fasta_path,
             fasta_name=fasta_name,
-            output_dir_base=FLAGS.output_dir,
+            output_dir=output_dir,
         )
 
 

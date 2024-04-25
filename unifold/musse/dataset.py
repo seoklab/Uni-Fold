@@ -2,6 +2,7 @@ from unifold.dataset import *
 from unifold.data.process import process_features_single
 import gzip
 import pickle
+from pathlib import Path
 
 
 @utils.lru_cache(maxsize=8, copy=True)
@@ -108,7 +109,7 @@ def load(
         try:
             assemb_name = label_ids[0].split("_")[0]
         except:
-            assemb_name = sequence_ids[0].split("_")[0]
+            assemb_name = Path(emb_dir).name
     embeddings = load_assembly_esm(emb_dir, assemb_name)
 
     all_chain_features = [load_emb(s, feature_dir, emb_dir) for s in sequence_ids]
