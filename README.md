@@ -4,6 +4,19 @@
 
 [[UF-Symmetry bioRxiv](https://www.biorxiv.org/content/10.1101/2022.08.30.505833)]
 
+
+---
+
+## NEWEST in Uni-Fold
+
+[2023-09-21] Quick try of Uni-Fold at [Bohrium Apps](https://app.bohrium.dp.tech/uni-fold/)! Check [here](https://github.com/dptech-corp/Uni-Fold/issues/131) for details.
+
+[2022-11-15] We released the full dataset used to train Uni-Fold.
+
+[2022-09-06] We released the code of Uni-Fold Symmetry (UF-Symmetry), a fast solution to fold large symmetric protein complexes. The details of UF-Symmetry can be found in [bioRxiv: Uni-Fold Symmetry: Harnessing Symmetry in Folding Large Protein Complexes](https://doi.org/10.1101/2022.08.30.505833). The code of UF-Symmetry is concentrated in the folder [`unifold/symmetry`](./unifold/symmetry/).
+
+---
+
 We proudly present Uni-Fold as a thoroughly open-source platform for developing protein models beyond [AlphaFold](https://github.com/deepmind/alphafold/). Uni-Fold introduces the following features:
 
 - Reimplemented AlphaFold and AlphaFold-Multimer models in PyTorch framework. **This is currently the first (if any else) open-source repository that supports training AlphaFold-Multimer.**
@@ -43,14 +56,6 @@ Figure 3. Uni-Fold is to our knowledge the fastest implemetation of AlphaFold.
 &nbsp;
 
 The name Uni-Fold is inherited from our previous repository, [Uni-Fold-JAX](https://github.com/dptech-corp/Uni-Fold-jax). First released on Dec 8 2021, Uni-Fold-JAX was the first open-source project (with training scripts) that successfully reproduced the from-scratch training of AlphaFold. Until recently, Uni-Fold-JAX is still the only project that supports training of the original AlphaFold implementation in JAX framework. Due to efficiency and collaboration considerations, we moved from JAX to PyTorch on Jan 2022, based on which we further developed the multimer models.
-
----
-
-## NEWEST in Uni-Fold
-
-[2022-11-15] We released the full dataset used to train Uni-Fold.
-
-[2022-09-06] We released the code of Uni-Fold Symmetry (UF-Symmetry), a fast solution to fold large symmetric protein complexes. The details of UF-Symmetry can be found in [bioRxiv: Uni-Fold Symmetry: Harnessing Symmetry in Folding Large Protein Complexes](https://doi.org/10.1101/2022.08.30.505833). The code of UF-Symmetry is concentrated in the folder [`unifold/symmetry`](./unifold/symmetry/).
 
 ![case](./img/uf-symmetry-effect.gif)
 <center>
@@ -161,15 +166,19 @@ This command starts a training process on the [demo data](example_data) included
 
 ### Full training dataset download
 
-The full training dataset used in Uni-Fold is hosted at [modelscope](https://modelscope.cn/datasets/DPTech/Uni-Fold-Data/summary). You can download it by the following instructions. 
+We thank [ModelScope](https://modelscope.cn/home) and [Volcengine](https://www.volcengine.com) for providing free hosts of the full training dataset. The downloaded dataset could be directly used to train Uni-Fold from-scratch.
 
-First, install modelscope
+#### Download from ModelScope
+
+Download the dataset from [modelscope](https://modelscope.cn/datasets/DPTech/Uni-Fold-Data/summary) following: 
+
+1. install modelscope
 
 ```bash
 pip3 install https://databot-algo.oss-cn-zhangjiakou.aliyuncs.com/maas/modelscope-1.0.0-py3-none-any.whl 
 ```
 
-Then, download the dataset in python
+2. download the dataset with python
 
 ```python
 import os
@@ -183,7 +192,35 @@ ds = MsDataset.load(dataset_name='Uni-Fold-Data', namespace='DPTech', split='tra
 # The data will be located at ${your_data_path}/modelscope/hub/datasets/downloads/DPTech/Uni-Fold-Data/master/*
 ```
 
-The downloaded dataset could be directly used by Uni-Fold for the training.
+#### Download from Volcengine
+
+1. install rclone
+
+```bash
+curl https://rclone.org/install.sh | sudo bash
+```
+
+2. get the config file path of rclone via
+```bash
+rclone config file
+```
+
+3. update the config file with the following content
+```bash
+[volces-tos]
+type = s3
+provider = Other
+region = cn-beijing
+endpoint = https://tos-s3-cn-beijing.volces.com
+force_path_style = false
+disable_http2 = true
+```
+
+4. download the dataset
+```bash
+data_path = "your_data_path"
+rclone sync volces-tos:bioos-hermite-beijing/unifold_data $data_path
+```
 
 ### From-scratch Training
 

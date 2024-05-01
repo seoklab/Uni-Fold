@@ -1,0 +1,25 @@
+name: unifold
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.8
+  - pytorch=1.11.0
+  - cudatoolkit=11.3
+  - bioconda::hmmer=3.3
+  - bioconda::hhsuite=3.3
+  - bioconda::kalign2=2.04
+  - tensorboardx
+  - biopython
+  - numpy
+  - scipy
+  - pandas
+  - python-lmdb
+  - ml-collections
+  - tokenizers
+  - wandb
+  - tqdm
+  - pip
+  - pip:
+    - https://github.com/dptech-corp/Uni-Core/releases/download/0.0.1/unicore-0.0.1+cu113torch1.11.0-cp38-cp38-linux_x86_64.whl

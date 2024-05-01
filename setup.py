@@ -47,4 +47,19 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
+    scripts=[
+        "finetune_monomer.sh",
+        "finetune_multimer.sh",
+        "run_uf_symmetry.sh",
+        "run_unifold.sh",
+        "train_monomer.sh",
+        "train_multimer.sh",
+    ],
+    entry_points={
+        "console_scripts": [
+            "unifold-homo-search = unifold.homo_search:main",
+            "unifold-inference = unifold.inference:main",
+            "unifold-inference-symmetry = unifold.inference_symmetry:main",
+        ]
+    },
 )

@@ -53,7 +53,7 @@ def load_feature_for_one_target(
     return batch
 
 
-def main(args):
+def _main(args):
     config = uf_symmetry_config()
     config.data.common.max_recycling_iters = args.max_recycling_iters
     config.globals.max_recycling_iters = args.max_recycling_iters
@@ -64,7 +64,7 @@ def main(args):
         config.data.predict.subsample_templates = True
     # faster prediction with large chunk
     config.globals.chunk_size = 128
-    
+
     model = UFSymmetry(config)
 
     print("start to load params {}".format(args.param_path))
@@ -91,7 +91,7 @@ def main(args):
         name_suffix += "_r" + str(args.max_recycling_iters)
     if args.num_ensembles != 2:
         name_suffix += "_e" + str(args.num_ensembles)
-    
+
     symmetry = args.symmetry
     if symmetry[0] != 'C':
         raise NotImplementedError(f"symmetry {symmetry} is not supported currently.")
@@ -108,7 +108,7 @@ def main(args):
             use_uniprot=args.use_uniprot,
         )
         seq_len = batch["aatype"].shape[-1]
-        
+
         # faster prediction with large chunk/block size
         chunk_size, block_size = automatic_chunk_size(
                                     seq_len,
@@ -137,7 +137,7 @@ def main(args):
                 return x
 
         out = raw_out
-        
+
         # Toss out the recycling dimensions --- we don't need them anymore
         batch = tensor_tree_map(lambda t: t[-1, 0, ...], batch)
         batch = tensor_tree_map(to_float, batch)
@@ -152,7 +152,7 @@ def main(args):
         )
         plddt_b_factors_assembly = np.repeat(
             plddt_b_factors, batch["symmetry_opers"].shape[0], axis=-2)
-        
+
         cur_assembly = assembly_from_prediction(
             result=out, b_factors=plddt_b_factors_assembly
         )
@@ -171,7 +171,7 @@ def main(args):
         del out
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--model_device",
@@ -237,4 +237,8 @@ if __name__ == "__main__":
             --model_device for better performance"""
         )
 
-    main(args)
+    _main(args)
+
+
+if __name__ == "__main__":
+    main()

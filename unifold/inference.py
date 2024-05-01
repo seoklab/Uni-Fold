@@ -95,7 +95,7 @@ def load_feature_for_one_target(
     return batch
 
 
-def main(args):
+def _main(args):
     config = model_config(args.model_name)
     config.data.common.max_recycling_iters = args.max_recycling_iters
     config.globals.max_recycling_iters = args.max_recycling_iters
@@ -222,7 +222,7 @@ def main(args):
         json.dump(ptms, open(os.path.join(output_dir, ptm_fname), "w"), indent=4)
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--model_device",
@@ -287,4 +287,8 @@ if __name__ == "__main__":
             --model_device for better performance"""
         )
 
-    main(args)
+    _main(args)
+
+
+if __name__ == "__main__":
+    main()
