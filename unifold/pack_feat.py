@@ -108,18 +108,11 @@ def main(argv):
 
     input_fasta_str = open(fasta_path).read()
     input_seqs, input_descs = parsers.parse_fasta(input_fasta_str)
-    if len(input_seqs) > 1:
-        temp_names, temp_paths = divide_multi_chains(
-            fasta_name, FLAGS.output_dir, input_seqs, input_descs
-        )
-        fasta_names = temp_names
-        fasta_paths = temp_paths
-    else:
-        chain_order_path = os.path.join(output_dir, "chains.txt")
-        with open(chain_order_path, "w") as f:
-            f.write("A")
-        fasta_names = [fasta_name]
-        fasta_paths = [fasta_path]
+    temp_names, temp_paths = divide_multi_chains(
+        fasta_name, FLAGS.output_dir, input_seqs, input_descs
+    )
+    fasta_names = temp_names
+    fasta_paths = temp_paths
 
     # Check for duplicate FASTA file names.
     if len(fasta_names) != len(set(fasta_names)):
