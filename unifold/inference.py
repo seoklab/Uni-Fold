@@ -54,43 +54,42 @@ def automatic_chunk_size(seq_len, device, is_bf16):
 def load_feature_for_one_target(
     config, data_folder, seed=0, is_multimer=False, use_uniprot=False
 ):
-    if not is_multimer:
-        uniprot_msa_dir = None
-        sequence_ids = open(os.path.join(data_folder, "chains.txt")).readline().split()
-        if use_uniprot:
-            uniprot_msa_dir = data_folder
+    sequence_ids = open(
+        os.path.join(data_folder, "chains.txt")).readline().split()
 
-    else:
+    if is_multimer or use_uniprot:
         uniprot_msa_dir = data_folder
-        sequence_ids = open(os.path.join(data_folder, "chains.txt")).readline().split()
-        if config.data.common.use_musse:
-            batch, _ = load_and_process_musse(
-                config=config.data,
-                mode="predict",
-                seed=seed,
-                batch_idx=None,
-                data_idx=0,
-                is_distillation=False,
-                sequence_ids=sequence_ids,
-                feature_dir=data_folder,
-                is_monomer=(not is_multimer),
-                emb_dir=data_folder,
-                msa_feature_dir=None,
-                template_feature_dir=None,
-            )
-        else:
-            batch, _ = load_and_process(
-                config=config.data,
-                mode="predict",
-                seed=seed,
-                batch_idx=None,
-                data_idx=0,
-                is_distillation=False,
-                sequence_ids=sequence_ids,
-                monomer_feature_dir=data_folder,
-                uniprot_msa_dir=uniprot_msa_dir,
-                is_monomer=(not is_multimer),
-            )
+    else:
+        uniprot_msa_dir = None
+
+    if config.data.common.use_musse:
+        batch, _ = load_and_process_musse(
+            config=config.data,
+            mode="predict",
+            seed=seed,
+            batch_idx=None,
+            data_idx=0,
+            is_distillation=False,
+            sequence_ids=sequence_ids,
+            feature_dir=data_folder,
+            is_monomer=(not is_multimer),
+            emb_dir=data_folder,
+            msa_feature_dir=None,
+            template_feature_dir=None,
+        )
+    else:
+        batch, _ = load_and_process(
+            config=config.data,
+            mode="predict",
+            seed=seed,
+            batch_idx=None,
+            data_idx=0,
+            is_distillation=False,
+            sequence_ids=sequence_ids,
+            monomer_feature_dir=data_folder,
+            uniprot_msa_dir=uniprot_msa_dir,
+            is_monomer=(not is_multimer),
+        )
     batch = UnifoldDataset.collater([batch])
     return batch
 
